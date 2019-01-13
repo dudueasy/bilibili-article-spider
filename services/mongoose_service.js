@@ -1,19 +1,24 @@
+// this module build mongoose db connection.
+// call this module before using mongoose model api
 const mongoose = require('mongoose');
 let logger = require('../utils/loggers/logger');
 
+mongoose.set('useFindAndModify', false)
 mongoose.Promise = Promise;
 
-const uri = 'mongodb://localhost:27017/apolo';
+const uri = 'mongodb://localhost:27017/bilibili';
 mongoose.connect(uri, {useNewUrlParser: true});
 let db = mongoose.connection;
 
 db.on('open', () => {
-  logger('info', 'info', `mongodb connection built through mongoose`);
+  logger('info', 'info', `mongodb connection built through mongoose, connected database: ${process.env.DB_RESOURCE_DB}`);
 });
 
 db.on('error', (e) => {
   logger('error', 'Mongodb connection error: %s', e.message, {stack: e.stack});
   process.exit(1);
 });
+
+// mongoodb 连接测试代码 
 
 module.exports = db;
