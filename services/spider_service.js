@@ -12,7 +12,7 @@ const path = require('path');
 require('dotenv').config({path: path.join(__dirname, ".env")});
 const axios = require('axios');
 const cheerio = require('cheerio');
-const RedisService = require('./redis_service');
+const RedisService = require('./content_id_service');
 const moment = require('moment');
 const jieba = require('nodejieba');
 const ArticleModel = require('../models/article')
@@ -110,7 +110,7 @@ async function getSingleArticle(articleId) {
   let contentSelector  = process.env.CONTENT_SELECTOR 
 
   let articleContent = $(contentSelector)[0];
-  let title = $('.title').text();
+  let title = $('h1.title').text();
 
   // get divided tags from article title
   const titleTags = jieba.extract(title, 5);

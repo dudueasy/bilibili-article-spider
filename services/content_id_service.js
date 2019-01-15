@@ -1,12 +1,10 @@
-/* this module is used to connect redis-server and
- * return functions to fetch and insert ids from/into resource id set
- * from redis db;
+/*
+this module is used to create ids of resources,
+feed & manipulate resource id for spider 
 */
 
-const Redis = require('ioredis');
-const redis = new Redis();
+const redis = require('./redis_connection_service')
 const path = require('path')
-
 require('dotenv').config({path: path.join(__dirname, "../.env") });
 
 // the key of resource Ids set in redis
