@@ -4,12 +4,12 @@ const { Schema } = mongoose
 
 const ArticleSchema = new Schema({
   resourceId: String,
-  content: String,
+  content: Schema.Types.Mixed,
   articleContentHtml: String,
-  createdAt:{type:Number, default: Date.now().valueOf()},
+  createdAt: { type: Number, default: Date.now().valueOf() },
   title: {type: String, required: true},
   tags: [{name: String, value: String, score: Number}],
 })
 
-const articleModel = mongoose.model('bilibili',ArticleSchema)
+const articleModel = mongoose.model('article',ArticleSchema)
 module.exports = articleModel

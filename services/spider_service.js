@@ -165,7 +165,7 @@ async function getSingleArticle(articleId) {
         $set: {
           resourceId: articleId,
           content: HTMLTextAndImg,
-          articleContentHTML: articleContentHTML,
+          articleContentHtml: articleContentHTML,
           createAt: Date.now().valueOf(),
           originalCreateAt: originCreateAt,
           title: title,
