@@ -6,7 +6,7 @@
 
 # 服务依赖
 * mongodb 服务器
-* redis 服务器
+* redis 服务器
 
 # 项目入口
 ### http 服务
