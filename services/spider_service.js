@@ -141,7 +141,8 @@ async function getSingleArticle(articleId) {
   if (!articleContent) {
     // if url link to video, do something
     const isVideoResource = $('#player');
-    if (isVideoResource) {
+    if (isVideoResource.length) {
+      console.log(`isVideoResource: ${isVideoResource }`)
       console.log('this is a video resource');
     }
     else {
@@ -196,7 +197,8 @@ function getTextOrImg($, Dom, container) {
       container.push(cheerioDom.text());
     }
     else if (cheerioDom[0].name === 'img') {
-      container.push(cheerioDom[0].attribs.src);
+      img_src = $(cheerioDom[0]).data('src')
+      container.push( img_src ); 
     }
   }
   else {
