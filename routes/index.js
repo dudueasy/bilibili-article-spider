@@ -29,7 +29,7 @@ router.get('/spiderProtocol', (req, res) => {
   })
 })
 
-// 提供爬虫资源数据的 api, 接收 pageSize 和 lastestId 作为查询参数
+// 提供爬虫保存到本地的资源数据, 接收 pageSize 和 lastestId 作为查询参数
 router.get('/content', async (req, res) => {
   try {
     const { pageSize, latestId } = req.query
