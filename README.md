@@ -25,7 +25,7 @@ generate_ids startNumber endNumber
 // 批量爬取资源
 start_getting_articles totalCount
 
-// 获取单条资源数据
+// 获取单条资据
 get_single_article resourceId 
 ~~~
 
@@ -52,7 +52,4 @@ get '/content'
 ##### 作用: 返回该爬虫项目获取到的资源, 默认一次获取10条
 ##### 查询参数: 
 pageSize: 数字, 定义每次获取的资源条数\
-lastId: 资源 id, 表示最后一次访问该接口获取到的最后一个资源 id, 用于保存上次获取资源在数据库中的位置
-
-
-
+latestId: 资源 id, 表示最后一次访问该接口获取到的最后一个资源 id, 用于保存上次获取资源在数据库中的位置 
