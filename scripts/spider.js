@@ -18,12 +18,11 @@ switch (defaultTask) {
     let endpoint = Number(process.argv[4]);
     RedisService.generateResourceIdToRedis(startpoint, endpoint)
       .then((success) => { 
-          createAt = Date(Date.now()).toString()
+          createdAt = new Date(Date.now()).toString()
           let idGenerationRecord = `ids from ${startpoint}0000 to ${endpoint}0000 were added to local redis database at ${createAt}!`
           fs.writeFileSync('id_generation_record.txt',`\n${idGenerationRecord}`,{encoding:'utf-8',flag:'a'})
           console.log(idGenerationRecord)
           process.exit(0); 
-          process.exit(0);
         },
       )
       .catch(e => {
