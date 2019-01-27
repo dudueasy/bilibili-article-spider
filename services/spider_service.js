@@ -135,7 +135,9 @@ async function getSingleArticle(articleId) {
   });
 
 
-  let originCreateAt = $('.up-time').text();
+
+  let originalCreatedAt = new Date($(".create-time").data('ts') * 1000 )
+  console.log("originalCreatedAt:", originalCreatedAt)
 
   // if .aiticleContent not exist  (url doesn't link to an article)
   if (!articleContent) {
@@ -167,8 +169,8 @@ async function getSingleArticle(articleId) {
           resourceId: articleId,
           content: HTMLTextAndImg,
           articleContentHtml: articleContentHTML,
-          createAt: Date.now().valueOf(),
-          originalCreateAt: originCreateAt,
+          createdAt: Date(Date.now()),
+          originalCreatedAt: originalCreatedAt ,
           title: title,
           tags: tags,
         },
