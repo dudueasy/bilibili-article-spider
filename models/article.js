@@ -6,7 +6,8 @@ const ArticleSchema = new Schema({
   resourceId: String,
   content: Schema.Types.Mixed,
   articleContentHtml: String,
-  createdAt: { type: Number, default: Date.now().valueOf() },
+  createdAt: { type: String, default: Date.now().valueOf() },
+  originalCreatedAt:String,
   title: {type: String, required: true},
   tags: [{name: String, value: String, score: Number}],
 })
