@@ -20,11 +20,15 @@ router.get('/spiderProtocol', (req, res) => {
       name: 'FULL_FLEDGED_NET_SPIDER_PROTOCOL',
     },
     config: {
-      contentList: {
-        url: 'http://localhost:9000/content',
-        frequencyLimit: 5,
-        pageSizeLimit: 20,
-      }
+      singleContent:{
+        url:'not_created',
+        frequency: 5,
+      }, 
+      contentList:{
+        url: "http://139.199.87.221:8084/content",
+        frequency: 5,
+        pageSize: 10
+      } 
     }
   })
 })
@@ -45,15 +49,10 @@ router.get('/content', async (req, res) => {
     const match = {}
     if (latestId) match._id = {
       $gt: latestId,
-    }
-
+    } 
     const projection = null 
-
-    const option = { limit: Number(pageSize) || 10, sort: '_id' }
-
+    const option = { limit: Number(pageSize) || 10, sort: '_id' } 
     const articles = await ArticleModel.find(match, projection, option)
-    global.articles = articles
-    console.log(articles)
 
     contentList = []
     for (let model of articles) {
