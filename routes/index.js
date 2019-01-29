@@ -59,6 +59,7 @@ router.get('/content', async (req, res) => {
       let { _doc: article } = model
 
       contentList.push({
+        resourceId:article.resourceId,
         title: article.title,
         contentType: 'dom',
         content: {
