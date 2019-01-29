@@ -68,6 +68,7 @@ router.get('/content', async (req, res) => {
         },
         tags: article.tags,
         contentId: article._id,
+        originalCreatedAt: article.originalCreatedAt
       })
     }
 
