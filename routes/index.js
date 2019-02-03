@@ -52,7 +52,12 @@ router.get('/content', async (req, res) => {
     } 
     const projection = null 
     const option = { limit: Number(pageSize) || 10, sort: '_id' } 
-    const articles = await ArticleModel.find(match, projection, option)
+    const articles = await ArticleModel.find(match, projection, option).catch(err=>{
+      logger('request params error', '请求参数异常 : %s', err.message, err.stack);
+
+      res.send({ code: 400, msg: '请求参数异常' });
+
+    })
 
     contentList = []
     for (let model of articles) {
