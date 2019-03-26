@@ -20,7 +20,7 @@ let logger = require('../utils/loggers/logger');
 
 
 // connect to mongodb through mongoose
-require('./mongoose_service')
+require('./mongoose_db_connection')
 
 
 class Tag {
@@ -107,13 +107,14 @@ async function getSingleArticle(articleId) {
   // init a tags for resource related tags
   // including category and user defined tags
   let tags = [];
-  let contentSelector  = process.env.CONTENT_SELECTOR 
+  let contentSelector  = process.env.CONTENT_SELECTOR
 
   let articleContent = $(contentSelector)[0];
   let title = $('h1.title').text();
 
   // get divided tags from article title
-  const titleTags = jieba.extract(title, 5);
+  let titleTags = jieba.extract(title, 5)
+    .sort((a, b) => b.weight - a.weight).map((tag, index, array) => ({...tag, weight: tag.weight / array[0].weight}) );
 
   for (let tag of titleTags) {
     tags.push(new Tag('ARTICLE_TAG_TITLE', tag.word.trim(), tag.weight));
@@ -123,7 +124,7 @@ async function getSingleArticle(articleId) {
   let articleTags = $('.category-link').text()
   console.log('articleTags', articleTags);
 
-  tags.push(new Tag('ARTICLE_CATEGORY', articleTags.trim(), 1));
+  tags.push(new Tag('ARTICLE_CATEGORY', articleTags.trim(), 0.7));
 
   //retrieve user defined tags from HTML data
   let userDefinedTags = [];
@@ -131,7 +132,7 @@ async function getSingleArticle(articleId) {
   tagContentFromHtml.map((index, element)=>{userDefinedTags.push($(element).text())})
 
   userDefinedTags.forEach(tag => {
-    tags.push(new Tag('ARTICLE_TAG_USER', tag.trim(), 1));
+    tags.push(new Tag('ARTICLE_TAG_USER', tag.trim(), 0.5));
   });
 
 
@@ -199,7 +200,7 @@ function getTextOrImg($, Dom, container) {
     }
     else if (cheerioDom[0].name === 'img') {
       img_src = $(cheerioDom[0]).data('src')
-      container.push( img_src ); 
+      container.push( img_src );
     }
   }
   else {
