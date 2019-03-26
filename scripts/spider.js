@@ -57,6 +57,10 @@ switch (defaultTask) {
         // process.exit(1);
       });
     break;
+
+  default:
+    console.log('unrecognized command')
+    process.exit(0)
 }
 
 // run Spider.spideringArticles on the background
