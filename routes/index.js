@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 // connect to mongodb through mongoose
-require('../services/mongoose_service')
+require('../services/mongoose_db_connection')
 const ArticleModel = require('../models/article')
 let logger = require('../utils/loggers/logger')
 
