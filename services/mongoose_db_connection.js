@@ -1,12 +1,21 @@
 // this module build mongoose db connection.
 // call this module before using mongoose model api
+const path = require('path');
 const mongoose = require('mongoose');
 let logger = require('../utils/loggers/logger');
 
-mongoose.set('useFindAndModify', false)
+require('dotenv').config({path: path.join(__dirname, '.env')});
+
+mongoose.set('useFindAndModify', false);
 mongoose.Promise = Promise;
 
-const uri = 'mongodb://localhost:27017/bilibili';
+
+DB_RESOURCE_DB = process.env.DB_RESOURCE_DB;
+DB_URL = process.env.DB_URL;
+
+const uri = `${DB_URL}/${DB_RESOURCE_DB}`;
+
+
 mongoose.connect(uri, {useNewUrlParser: true});
 let db = mongoose.connection;
 
@@ -19,6 +28,6 @@ db.on('error', (e) => {
   process.exit(1);
 });
 
-// mongoodb 连接测试代码 
+// mongoodb 连接测试代码
 
 module.exports = db;

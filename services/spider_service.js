@@ -19,8 +19,6 @@ const ArticleModel = require('../models/article')
 let logger = require('../utils/loggers/logger');
 
 
-// connect to mongodb through mongoose
-require('./mongoose_db_connection')
 
 
 class Tag {
