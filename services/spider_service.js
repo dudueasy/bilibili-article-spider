@@ -86,18 +86,22 @@ async function getSingleArticle(articleId) {
         if (e.response.status === 404) {
           const error = new Error('Not Found');
           error.errorCode = 4040000;
+          RedisService.markArticleIdFailed(articleId);
           throw error;
         } else if (e.response.status >= 500) {
 
           const error = new Error('Internal Server Error');
           error.errorCode = 5000000;
+          RedisService.markArticleIdFailed(articleId);
           throw error;
         }
         else {
+          RedisService.markArticleIdFailed(articleId);
           throw e;
         }
       }
       else if (e.request) {
+        RedisService.markArticleIdFailed(articleId);
         throw new Error("no response was received");
       }
     });
@@ -149,6 +153,7 @@ async function getSingleArticle(articleId) {
     else {
       console.log('.articleContent not exist');
     }
+    RedisService.markArticleIdFailed(articleId);
     throw new Error('target url does not link to a article resource');
   }
   else {
