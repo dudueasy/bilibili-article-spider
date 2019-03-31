@@ -1,14 +1,20 @@
 var express = require('express');
 var router = express.Router();
 
+const path = require('path');
+require('dotenv').config({path: path.join(__dirname, "../.env")});
+
 // connect to mongodb through mongoose
-require('../services/mongoose_db_connection')
-const ArticleModel = require('../models/article')
-let logger = require('../utils/loggers/logger')
+const ArticleModel = require('../models/article');
+let logger = require('../utils/loggers/logger');
+
+const HOST = process.env.HOST;
+const PORT = process.env.PORT;
+const serverUrl = `${HOST}:${PORT}`;
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Bilibili Article Spider' });
+  res.render('index', {title: 'Bilibili Article Spider'});
 });
 
 // 爬虫微服务验证接口
@@ -20,23 +26,23 @@ router.get('/spiderProtocol', (req, res) => {
       name: 'FULL_FLEDGED_NET_SPIDER_PROTOCOL',
     },
     config: {
-      singleContent:{
-        url:'not_created',
+      singleContent: {
+        url: 'not_created',
         frequency: 5,
-      }, 
-      contentList:{
-        url: "http://139.199.87.221:8084/content",
+      },
+      contentList: {
+        url: `${serverUrl}/content`,
         frequency: 5,
-        pageSize: 10
-      } 
-    }
-  })
-})
+        pageSize: 10,
+      },
+    },
+  });
+});
 
 // 提供爬虫保存到本地的资源数据, 接收 pageSize 和 lastestId 作为查询参数
 router.get('/content', async (req, res) => {
   try {
-    const { pageSize, latestId } = req.query
+    const {pageSize, latestId} = req.query;
     // 创建一个 match 对象,
     // 如果查询参数中有 lastestId 字段, 那么它将作为查询的依据 
     // 需要记录上一次请求该接口时的, 数据条目中最大的 id 值 
@@ -46,25 +52,25 @@ router.get('/content', async (req, res) => {
     // 如果没有 lastedtId 字段, 那么使用的查询依据 match 为空
 
     // define match, projection, option for QUERY
-    const match = {}
+    const match = {};
     if (latestId) match._id = {
       $gt: latestId,
-    } 
-    const projection = null 
-    const option = { limit: Number(pageSize) || 10, sort: '_id' } 
-    const articles = await ArticleModel.find(match, projection, option).catch(err=>{
+    };
+    const projection = null;
+    const option = {limit: Number(pageSize) || 10, sort: '_id'};
+    const articles = await ArticleModel.find(match, projection, option).catch(err => {
       logger('request params error', '请求参数异常 : %s', err.message, err.stack);
 
-      res.send({ code: 400, msg: '请求参数异常' });
+      res.send({code: 400, msg: '请求参数异常'});
 
-    })
+    });
 
-    contentList = []
+    contentList = [];
     for (let model of articles) {
-      let { _doc: article } = model
+      let {_doc: article} = model;
 
       contentList.push({
-        resourceId:article.resourceId,
+        resourceId: article.resourceId,
         title: article.title,
         contentType: 'dom',
         content: {
@@ -73,15 +79,14 @@ router.get('/content', async (req, res) => {
         },
         tags: article.tags,
         contentId: article._id,
-        originalCreatedAt: article.originalCreatedAt
-      })
+        originalCreatedAt: article.originalCreatedAt,
+      });
     }
 
-    res.json({ contentList })
-  }
-  catch (err) {
+    res.json({contentList});
+  } catch (err) {
     logger('error', 'uncaughtException error in routes/index.js : %s', err.message, err.stack);
   }
-})
+});
 
 module.exports = router;
